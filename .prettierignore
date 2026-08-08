@@ -1,0 +1,8 @@
+# Local / tooling
+.refs/
+.data/
+.venv/
+node_modules/
+
+# Non-formatted
+LICENSE

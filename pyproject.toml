@@ -1,0 +1,36 @@
+[project]
+name = "android-auto-control"
+version = "0.0.0"
+description = "Control an Android device from a PC by analysing its mirrored screen and driving a BLE HID touch device"
+authors = [{ name = "nil-park", email = "kwang0621@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy (>=2.2.0,<3.0.0)",
+    "opencv-python (>=4.11.0,<5.0.0)",
+    "pyserial (>=3.5,<4.0)",
+]
+
+[project.scripts]
+android-auto-control = "android_auto_control.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pyright[nodejs]>=1.1.407",
+    "pytest>=9.0.1",
+    "ruff>=0.14.7",
+    "types-pyserial>=3.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+include = ["android_auto_control"]
+
+[tool.ruff]
+line-length = 119
+
+[tool.ruff.lint]
+extend-select = ["I", "RUF", "UP"]

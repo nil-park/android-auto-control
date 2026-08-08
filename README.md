@@ -22,7 +22,12 @@
 
 ```bash
 uv sync
-uv run android-auto-control
+```
+
+입력 경로가 살아 있는지는 탭을 한 번 보내 확인합니다.
+
+```bash
+uv run android-auto-control --port COM3 --screen 1080x2400 540 1200
 ```
 
 ## 개발
