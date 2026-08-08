@@ -1,35 +1,14 @@
 # 개발 환경 구축
 
-## PC
+도구를 먼저 갖춘다. 목록과 받는 곳은 [필수 도구](required-tools.md)에 있다.
 
-### uv
-
-Python 런타임과 의존성을 모두 uv가 관리한다. 설치는
-<https://docs.astral.sh/uv/getting-started/installation>을 따른다.
+## 프로젝트
 
 ```bash
 uv sync
 ```
 
-`.python-version`에 적힌 버전을 uv가 내려받아 `.venv/`를 만든다. Python을 따로 설치하지 않는다.
-
-### adb
-
-Android SDK Platform Tools에 들어 있다. <https://developer.android.com/tools/releases/platform-tools>에서
-받아 압축을 풀고, 그 디렉터리를 `PATH`에 넣는다.
-
-```bash
-adb version
-```
-
-### scrcpy
-
-<https://github.com/Genymobile/scrcpy/releases>에서 Windows 빌드를 받아 압축을 풀고 `PATH`에 넣는다.
-화면 수신은 Python 패키지가 하지만, 연결이 되는지 눈으로 먼저 확인할 때 쓴다.
-
-```bash
-scrcpy --version
-```
+`.venv/`가 만들어지고 의존성이 잡힌다.
 
 ## 폰
 

@@ -33,8 +33,8 @@ uv run android-auto-control --port COM3 --screen 1080x2400 540 1200
 ## 개발
 
 ```bash
-make format   # 포매팅과 검사를 한 번에 (로컬)
-make test     # 검사만 (CI)
+make format   # 고치면서 검사한다
+make test     # 고치지 않고 검사만 한다
 ```
 
 ## License

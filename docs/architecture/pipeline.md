@@ -4,12 +4,15 @@
 입력 경로가 화면 경로와 분리되어 있어 폰에서 보면 화면을 내보내는 것과 터치를 받는 것이
 서로 다른 장치다.
 
-```
-[폰] --Wi-Fi(scrcpy)--> [PC: 화면 분석 + 좌표 계산]
-                              |
-                    [PC --USB Serial--> ESP32]
-                              |
-                    [ESP32 --BLE HID(터치)--> 폰]
+```mermaid
+flowchart LR
+  phone["폰"]
+  pc["PC<br/>화면 분석 + 좌표 계산"]
+  esp["ESP32"]
+
+  phone -- "Wi-Fi (scrcpy)" --> pc
+  pc -- "USB Serial" --> esp
+  esp -- "BLE HID (터치)" --> phone
 ```
 
 ## 구성 요소
@@ -32,8 +35,34 @@ Python 패키지 `android_auto_control`은 파이프라인의 세 구간을 그�
 | `geometry` | 프레임 좌표   | 폰 화면 좌표        | 좌표계 사이를 변환한다                       |
 | `runner`   | -             | -                   | 위 모듈을 이어 붙여 한 번의 판단 주기를 돈다 |
 
-`capture`와 `touch`는 각각 폰과 ESP32라는 외부 장치를 감싸고, `vision`과 `geometry`는 외부
-의존이 없는 순수 계산이다. `runner`만 다섯 모듈을 모두 안다.
+모듈 사이의 의존은 한 방향으로만 흐른다.
+
+```mermaid
+flowchart LR
+  runner["runner"]
+  capture{{"capture"}}
+  touch{{"touch"}}
+  vision["vision"]
+  geometry["geometry"]
+
+  runner --> capture
+  runner --> vision
+  runner --> touch
+  runner --> geometry
+  vision --> capture
+  vision --> geometry
+  capture --> geometry
+  touch --> geometry
+```
+
+- **화살표 `A → B`는 A가 B를 import한다는 뜻이다.** 거슬러 올라가면 하나를 고칠 때 누가
+  영향받는지가 보인다.
+- **육각형은 외부 장치를 감싸는 모듈이고 사각형은 순수 계산이다.** `capture`는 폰을,
+  `touch`는 ESP32를 맡는다. `vision`과 `geometry`는 외부 의존이 없어 값만 넣으면 테스트된다.
+- **`runner`를 의존하는 모듈은 없다.** 다섯을 모두 아는 유일한 자리이므로 판단 주기가 바뀌면
+  여기만 고친다.
+- **`__main__`은 그래프 밖에서 명령줄 인자를 받아 `touch`를 부른다.** 파이프라인의 일부가
+  아니라 사람이 손으로 입력 경로를 확인하는 통로다.
 
 ## 좌표계
 
