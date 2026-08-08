@@ -78,6 +78,15 @@ def test_a_command_that_is_not_acknowledged_raises(monkeypatch: pytest.MonkeyPat
         _ = SerialTouchDevice("COM3", Size(1080, 2400))
 
 
+def test_a_failed_handshake_closes_the_port(monkeypatch: pytest.MonkeyPatch) -> None:
+    port = _attach(monkeypatch, [b"ERR busy\n"])
+
+    with pytest.raises(TouchDeviceError):
+        _ = SerialTouchDevice("COM3", Size(1080, 2400))
+
+    assert port.closed
+
+
 def test_leaving_the_context_closes_the_port(monkeypatch: pytest.MonkeyPatch) -> None:
     port = _attach(monkeypatch, [b"OK\n"])
 

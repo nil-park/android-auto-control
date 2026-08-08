@@ -3,8 +3,10 @@ import cv2
 from .capture import Frame
 from .geometry import Point
 
+DEFAULT_THRESHOLD = 0.9
 
-def find_template(frame: Frame, template: Frame, threshold: float = 0.9) -> Point | None:
+
+def find_template(frame: Frame, template: Frame, threshold: float = DEFAULT_THRESHOLD) -> Point | None:
     """템플릿이 가장 잘 맞는 자리의 중심을 프레임 좌표로 돌려준다. 점수가 임계값에 못 미치면 None."""
     frame_height, frame_width = frame.shape[:2]
     template_height, template_width = template.shape[:2]

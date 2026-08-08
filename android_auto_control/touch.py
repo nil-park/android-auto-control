@@ -8,6 +8,8 @@ from .geometry import Point, Size
 _ENCODING = "ascii"
 _ACK = "OK"
 
+DEFAULT_TAP_DURATION_MS = 80
+
 
 class TouchDeviceError(RuntimeError):
     pass
@@ -19,7 +21,7 @@ class TouchDevice(Protocol):
     @property
     def screen(self) -> Size: ...
 
-    def tap(self, point: Point, duration_ms: int = 80) -> None: ...
+    def tap(self, point: Point, duration_ms: int = DEFAULT_TAP_DURATION_MS) -> None: ...
 
 
 def _command(*parts: object) -> bytes:
@@ -52,13 +54,17 @@ class SerialTouchDevice:
     def __init__(self, port: str, screen: Size, *, baudrate: int = 115200, timeout_s: float = 1.0) -> None:
         self._screen = screen
         self._port = serial.Serial(port, baudrate=baudrate, timeout=timeout_s)
-        self._send(encode_screen_size(screen))
+        try:
+            self._send(encode_screen_size(screen))
+        except BaseException:
+            self.close()
+            raise
 
     @property
     def screen(self) -> Size:
         return self._screen
 
-    def tap(self, point: Point, duration_ms: int = 80) -> None:
+    def tap(self, point: Point, duration_ms: int = DEFAULT_TAP_DURATION_MS) -> None:
         self._send(encode_tap(point, duration_ms))
 
     def press(self, point: Point) -> None:
@@ -86,6 +92,7 @@ class SerialTouchDevice:
 
     def _send(self, command: bytes) -> None:
         _ = self._port.write(command)
-        answer = self._port.readline().decode(_ENCODING).strip()
+        # 잡음이 섞인 라인도 TouchDeviceError로 나가야 하므로 디코딩에서 터뜨리지 않는다.
+        answer = self._port.readline().decode(_ENCODING, errors="replace").strip()
         if answer != _ACK:
             raise TouchDeviceError(f"{command.decode(_ENCODING).strip()!r} was answered with {answer!r}")

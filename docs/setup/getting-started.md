@@ -61,7 +61,7 @@ scrcpy
 
 ## ESP32
 
-펌웨어는 별도 리포지토리에서 관리한다. PC 쪽에서는 보드가 꽂힌 COM 포트 번호만 알면 된다.
+보드를 USB로 꽂고 COM 포트 번호를 확인한다. 실행할 때 `--port`로 넘기는 값이다.
 
 ```powershell
 Get-CimInstance Win32_SerialPort | Select-Object DeviceID, Description
