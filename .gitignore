@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local scratch
+.refs/
+.data/
+
+# crash dumps a dying Git Bash leaves behind
+*.stackdump
