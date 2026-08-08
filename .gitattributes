@@ -1,0 +1,11 @@
+# Line endings are decided here, not by each machine's core.autocrlf.
+#
+# Git for Windows installs with core.autocrlf=true, so a checkout writes CRLF
+# while Prettier writes LF. Every `make format` then left the tree dirty with
+# files whose content diff was empty — pure line-ending churn that had to be
+# stepped around on each commit. Checking out LF matches what the formatter
+# produces, so the two stop fighting, on every machine.
+* text=auto eol=lf
+
+# cmd.exe can mis-parse a batch file that arrives with LF.
+*.bat text eol=crlf
