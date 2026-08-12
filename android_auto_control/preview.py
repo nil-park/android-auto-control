@@ -1,19 +1,29 @@
 import logging
 import time
+from datetime import datetime
+from pathlib import Path
 
 import cv2
 
-from .capture import ScreenCapture, locate_server, server_version
+from .capture import BgrFrame, ScreenCapture, locate_server, server_version
 from .settings import AndroidAutoControlSettings
 
 _WINDOW_TITLE = "android-auto-control"
 _FRAME_LOG_INTERVAL_SECONDS = 60.0
+_SCREENSHOT_DIR = Path(".out")
 
 logger = logging.getLogger(__name__)
 
 
+def _save_screenshot(frame: BgrFrame) -> None:
+    _SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
+    path = _SCREENSHOT_DIR / f"screenshot-{datetime.now():%Y%m%d-%H%M%S-%f}.png"
+    cv2.imwrite(str(path), frame)
+    logger.info(f"Saved screenshot to {path}")
+
+
 def run(settings: AndroidAutoControlSettings) -> int:
-    """폰 화면을 OpenCV 창에 띄운다. `q`를 누르면 종료한다."""
+    """폰 화면을 OpenCV 창에 띄운다. `q`를 누르면 종료하고, `c`를 누르면 `.out`에 스크린샷을 저장한다."""
     jar = locate_server(settings.scrcpy_server)
     version = server_version(jar)
     logger.info(f"Using scrcpy-server {version} at {jar}")
@@ -35,7 +45,10 @@ def run(settings: AndroidAutoControlSettings) -> int:
                 logger.info(f"Output frame size: {width}x{height}")
                 last_size_log = now
             cv2.imshow(_WINDOW_TITLE, frame)
-            if cv2.waitKey(1) & 0xFF == ord("q"):
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord("q"):
                 break
+            if key == ord("c"):
+                _save_screenshot(frame)
     cv2.destroyAllWindows()
     return 0
