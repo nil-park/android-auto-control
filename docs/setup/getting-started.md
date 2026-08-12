@@ -17,18 +17,15 @@ uv sync
 설정 → 휴대전화 정보 → 빌드 번호를 일곱 번 눌러 개발자 옵션을 켜고, 개발자 옵션에서 USB
 디버깅을 켠다.
 
-### 무선 연결
+### USB 연결
 
-USB로 한 번 연결해 PC를 인증한 뒤 무선으로 넘긴다.
+USB로 연결하고 인식되는지 확인한다.
 
 ```bash
 adb devices          # unauthorized면 폰에 뜬 대화상자에서 허용한다
-adb tcpip 5555
-adb connect <폰 IP>:5555
 ```
 
-USB 케이블을 뽑고 `adb devices`에 `<폰 IP>:5555`가 남아 있으면 성공이다. 폰이 재부팅되면
-`adb tcpip`부터 다시 한다.
+`device` 상태로 뜨면 준비된 것이다.
 
 ### 화면 확인
 
