@@ -63,6 +63,12 @@ class AndroidAutoControlSettings(YamlBaseSettings):
         alias="MAX_SIZE",
     )
 
+    display_scale: float = Field(
+        1.0,
+        description="Initial preview window size relative to the captured frame",
+        alias="DISPLAY_SCALE",
+    )
+
     @field_validator("log_level", mode="before")
     @classmethod
     def validate_log_level(cls, v: str | int) -> int:

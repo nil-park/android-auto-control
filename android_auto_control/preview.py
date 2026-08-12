@@ -17,8 +17,15 @@ def run(settings: AndroidAutoControlSettings) -> int:
     logger.info(f"Using scrcpy-server {version} at {jar}")
 
     cv2.namedWindow(_WINDOW_TITLE, cv2.WINDOW_NORMAL)
+    sized = False
     with ScreenCapture(jar, version, settings.max_size) as capture:
         for frame in capture.frames():
+            if not sized:
+                height, width = frame.shape[0], frame.shape[1]
+                cv2.resizeWindow(
+                    _WINDOW_TITLE, round(width * settings.display_scale), round(height * settings.display_scale)
+                )
+                sized = True
             cv2.imshow(_WINDOW_TITLE, frame)
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
