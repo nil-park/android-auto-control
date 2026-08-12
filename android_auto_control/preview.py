@@ -1,6 +1,6 @@
 import logging
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 import cv2
@@ -17,7 +17,8 @@ logger = logging.getLogger(__name__)
 
 def _save_screenshot(frame: BgrFrame) -> None:
     _SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
-    path = _SCREENSHOT_DIR / f"screenshot-{datetime.now():%Y%m%d-%H%M%S-%f}.png"
+    stamp = datetime.now(UTC).astimezone()
+    path = _SCREENSHOT_DIR / f"screenshot-{stamp:%Y%m%d-%H%M%S-%f}.png"
     cv2.imwrite(str(path), frame)
     logger.info(f"Saved screenshot to {path}")
 
