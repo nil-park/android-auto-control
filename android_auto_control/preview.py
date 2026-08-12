@@ -18,7 +18,8 @@ def run(settings: AndroidAutoControlSettings) -> int:
     version = server_version(jar)
     logger.info(f"Using scrcpy-server {version} at {jar}")
 
-    cv2.namedWindow(_WINDOW_TITLE, cv2.WINDOW_NORMAL)
+    # KEEPRATIO가 없으면 창이 화면에 잘려 모양이 틀어질 때 이미지가 늘어난다.
+    cv2.namedWindow(_WINDOW_TITLE, cv2.WINDOW_NORMAL | cv2.WINDOW_KEEPRATIO)
     sized = False
     last_size_log = 0.0
     with ScreenCapture(jar, version, settings.max_size) as capture:

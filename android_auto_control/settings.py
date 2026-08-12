@@ -64,7 +64,7 @@ class AndroidAutoControlSettings(YamlBaseSettings):
     )
 
     display_scale: float = Field(
-        1.0,
+        0.5,
         description="Initial preview window size relative to the captured frame",
         alias="DISPLAY_SCALE",
     )
