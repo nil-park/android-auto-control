@@ -37,11 +37,3 @@ scrcpy
 ```
 
 폰 화면이 PC 창에 뜨면 캡처 경로가 준비된 것이다.
-
-## ESP32
-
-보드를 USB로 꽂고 COM 포트 번호를 확인한다. 실행할 때 `--port`로 넘기는 값이다.
-
-```powershell
-Get-CimInstance Win32_SerialPort | Select-Object DeviceID, Description
-```

@@ -220,6 +220,7 @@ __marimo__/
 # Local scratch
 .refs/
 .data/
+.out/
 
 # crash dumps a dying Git Bash leaves behind
 *.stackdump

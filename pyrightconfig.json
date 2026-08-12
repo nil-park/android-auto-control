@@ -1,7 +1,7 @@
 {
   "include": ["android_auto_control", "tests"],
-  "exclude": ["**/node_modules", "**/__pycache__", "**/.*"],
-  "pythonVersion": "3.12",
+  "exclude": ["**/node_modules", "**/__pycache__", "**/.*", ".venv"],
+  "pythonVersion": "3.13",
   "typeCheckingMode": "strict",
   "reportMissingImports": true
 }

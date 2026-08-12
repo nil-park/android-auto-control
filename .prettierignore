@@ -2,6 +2,10 @@
 .refs/
 .data/
 .venv/
+.out/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
 node_modules/
 
 # Non-formatted
