@@ -7,9 +7,16 @@ BG_BLUE := \033[44m
 BG_PINK := \033[45m
 RESET := \033[0m
 
-.PHONY: format test
+DUNAMAI = uvx dunamai from git --style pep440 --pattern "^(?P<base>\d+\.\d+\.\d+)"
 
-# 고치면서 검사한다. 확장자별 파일이 없어도 오류 없이 넘어간다.
+.PHONY: version run format test
+
+version:
+	@$(DUNAMAI) --no-metadata
+
+run:
+	@uv run python -m android_auto_control
+
 format:
 	@echo -e "\n$(BG_BLUE)$(FG_WHITE)$(FG_BOLD) prettier $(RESET)\n"
 	@npx --yes prettier --write --no-error-on-unmatched-pattern "**/*.md" "**/*.json" "**/*.yml" "**/*.yaml"
@@ -22,7 +29,6 @@ format:
 	@echo -e "\n$(BG_PINK)$(FG_WHITE)$(FG_BOLD) pytest $(RESET)\n"
 	@uv run pytest
 
-# 고치지 않고 검사만 한다.
 test:
 	@echo -e "\n$(BG_BLUE)$(FG_WHITE)$(FG_BOLD) ruff check $(RESET)"
 	@uv run ruff check

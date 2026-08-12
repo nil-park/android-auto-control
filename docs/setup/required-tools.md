@@ -12,3 +12,5 @@
 | `eza`    | 세션 시작 시 프로젝트 구조 확인                             | `eza --version`    | <https://github.com/eza-community/eza/releases>               |
 
 Python은 따로 설치하지 않는다. `.python-version`에 적힌 버전을 uv가 내려받는다.
+
+`scrcpy`는 번들 adb 제거와 배치가 필요하다. [scrcpy 설치](install-scrcpy.md)를 따른다.

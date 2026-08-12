@@ -4,33 +4,49 @@ version = "0.0.0"
 description = "Control an Android device from a PC by analysing its mirrored screen and driving a BLE HID touch device"
 authors = [{ name = "nil-park", email = "kwang0621@gmail.com" }]
 readme = "README.md"
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.13,<3.14"
 dependencies = [
+    "colorama>=0.4.6",
     "numpy (>=2.2.0,<3.0.0)",
     "opencv-python (>=4.11.0,<5.0.0)",
-    "pyserial (>=3.5,<4.0)",
+    "pydantic>=2.12.5,<3.0.0",
+    "pydantic-settings>=2.14.1",
+    "pyyaml>=6.0",
 ]
 
 [project.scripts]
 android-auto-control = "android_auto_control.__main__:main"
 
 [dependency-groups]
-dev = [
-    "pyright[nodejs]>=1.1.407",
-    "pytest>=9.0.1",
-    "ruff>=0.14.7",
-    "types-pyserial>=3.5",
-]
+dev = ["pyright[nodejs]>=1.1.407", "pytest>=9.0.1", "ruff>=0.14.7"]
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 include = ["android_auto_control"]
 
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+pattern = "^(?P<base>\\d+\\.\\d+\\.\\d+)"
+fallback-version = "0.0.0"
+
+[tool.uv]
+cache-keys = [{ git = { commit = true, tags = true } }]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = [".refs", ".venv", ".git", ".data", ".out"]
+
 [tool.ruff]
 line-length = 119
+target-version = "py313"
+extend-exclude = [".refs", ".data", ".out"]
 
 [tool.ruff.lint]
 extend-select = ["I", "RUF", "UP"]
