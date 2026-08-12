@@ -58,7 +58,7 @@ class AndroidAutoControlSettings(YamlBaseSettings):
     )
 
     max_size: int = Field(
-        1024,
+        0,
         description="Downscale the longer screen side to this many pixels; 0 keeps the native size",
         alias="MAX_SIZE",
     )
