@@ -1,5 +1,6 @@
 import logging
 from logging import Logger
+from pathlib import Path
 
 from pydantic import Field, field_serializer, field_validator
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict, YamlConfigSettingsSource
@@ -48,6 +49,12 @@ class AndroidAutoControlSettings(YamlBaseSettings):
         description=f"Log level. must be one of {[k.lower() for k in logging._nameToLevel]}",  # type: ignore[attr-defined]
         examples=["info", "debug", "warning", "error", "critical"],
         alias="LOG_LEVEL",
+    )
+
+    scrcpy_server: Path | None = Field(
+        None,
+        description="Path to scrcpy-server; auto-discovered next to scrcpy on PATH when unset",
+        alias="SCRCPY_SERVER",
     )
 
     @field_validator("log_level", mode="before")
