@@ -16,7 +16,8 @@ def run(settings: AndroidAutoControlSettings) -> int:
     version = server_version(jar)
     logger.info(f"Using scrcpy-server {version} at {jar}")
 
-    with ScreenCapture(jar, version) as capture:
+    cv2.namedWindow(_WINDOW_TITLE, cv2.WINDOW_NORMAL)
+    with ScreenCapture(jar, version, settings.max_size) as capture:
         for frame in capture.frames():
             cv2.imshow(_WINDOW_TITLE, frame)
             if cv2.waitKey(1) & 0xFF == ord("q"):

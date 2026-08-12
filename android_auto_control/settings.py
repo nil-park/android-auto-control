@@ -57,6 +57,12 @@ class AndroidAutoControlSettings(YamlBaseSettings):
         alias="SCRCPY_SERVER",
     )
 
+    max_size: int = Field(
+        1024,
+        description="Downscale the longer screen side to this many pixels; 0 keeps the native size",
+        alias="MAX_SIZE",
+    )
+
     @field_validator("log_level", mode="before")
     @classmethod
     def validate_log_level(cls, v: str | int) -> int:

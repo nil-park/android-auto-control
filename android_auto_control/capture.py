@@ -47,9 +47,10 @@ def server_version(jar: Path) -> str:
 class ScreenCapture:
     """scrcpy 서버를 reverse 터널로 띄우고 영상 소켓에서 BGR 프레임을 낸다."""
 
-    def __init__(self, jar: Path, version: str) -> None:
+    def __init__(self, jar: Path, version: str, max_size: int) -> None:
         self._jar = jar
         self._version = version
+        self._max_size = max_size
         self._scid = randbelow(0x80000000)
         self._device: adbutils.AdbDevice = adbutils.adb.device()
         self._listener: socket.socket | None = None
@@ -111,7 +112,8 @@ class ScreenCapture:
         return (
             f"CLASSPATH={_SERVER_REMOTE} app_process / com.genymobile.scrcpy.Server {self._version} "
             f"scid={self._scid:08x} log_level=info video=true audio=false control=false "
-            f"video_codec=h264 send_device_meta=false send_codec_meta=false send_frame_meta=false"
+            f"max_size={self._max_size} video_codec=h264 "
+            f"send_device_meta=false send_codec_meta=false send_frame_meta=false"
         )
 
     def _cleanup(self) -> None:
