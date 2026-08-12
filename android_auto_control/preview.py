@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def run(settings: AndroidAutoControlSettings) -> int:
-    """폰 화면을 OpenCV 창에 띄운다. `q`를 누르면 닫는다."""
+    """폰 화면을 OpenCV 창에 띄운다. `q`를 누르면 종료한다."""
     jar = locate_server(settings.scrcpy_server)
     version = server_version(jar)
     logger.info(f"Using scrcpy-server {version} at {jar}")
